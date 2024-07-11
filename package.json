@@ -9,8 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.23.7",
-		"@babel/node": "^7.22.19",
-		"@babel/preset-env": "^7.23.8",
+    "@babel/node": "^7.22.19",
+    "@babel/preset-env": "^7.23.8",
     "colors": "^1.4.0",
     "shelljs": "^0.8.5"
   }
