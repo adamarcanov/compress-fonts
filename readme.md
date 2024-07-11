@@ -19,4 +19,4 @@ compressFonts({
 options (object): 
 - src (string) - dir source with your fonts
 - dist (string) - dir destination for compressed fonts
-- signs (string) - you can define signs you want to stay in compressed font
+- signs (string) - you can define signs you want to stay in compressed fonts
