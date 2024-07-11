@@ -1,9 +1,18 @@
-# usage in file
-run with babel-node
+# Usage in file
+run file with babel-node
 
+your file:
+```
 import compressFonts from '@offactory/compress-fonts'
 
-compressFonts({ src: join(__dirname, 'assets', 'fonts-raw'), dist: join(__dirname, 'assets', 'fonts') })
+compressFonts({ 
+    src: join(__dirname, 'assets', 'fonts-raw'), 
+    dist: join(__dirname, 'assets', 'fonts')
+    signs: "!—-–”“„#€$%&§'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~¡¢£¤¥¦§¨©ª«¬-®¯°±²³´µ¶·¸¹º»¼½¾¿÷ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľſŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž"
+})
+```
 
-// add to package.json
-"shelljs": "^0.8.5"
+options (object): 
+- src (string) - dir source with your fonts
+- dist (string) - dir destination for compressed fonts
+- signs (string) - you can define signs you want to stay in compressed font like
