@@ -1,6 +1,4 @@
 # Usage in file
-run file with babel-node
-
 your file:
 ```
 import { join } from 'path'

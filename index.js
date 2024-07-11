@@ -1,17 +1,15 @@
-import { existsSync } from 'fs';
-import { basename, join, parse } from 'path'
-import { execSync } from 'child_process'
+const { existsSync } = require('fs')
+const { basename, join, parse } = require('path')
+const { execSync } = require('child_process')
+const colors = require('colors')
+const timeNow = require('./lib/time-now.js')
+const listFiles = require('./lib/list-files.js')
+const textToUnicode = require('./lib/text-to-unicode.js')
+const createDir = require('./lib/create-dir.js')
 
-import colors from 'colors'
-
-import timeNow from './lib/time-now.js'
-import createDir from './lib/create-dir.js'
 const createWebDir = dist => createDir(dist, { 'generate_indexhtml': true })
 
-import listFiles from './lib/list-files.js'
-import textToUnicode from './lib/text-to-unicode.js'
-
-const compressFonts = ({ src, dist, signs }) => {
+module.exports = ({ src, dist, signs }) => {
     if ( !src || !dist ) throw new Error('Compress Fonts: src and dist are required')
 
     if ( !existsSync(dist) ) createWebDir( dist )
@@ -34,5 +32,3 @@ const compressFonts = ({ src, dist, signs }) => {
         console.log('['+ `${timeNow()}`.gray + '] ' + `${basename(file)} ` + '\x1b[32m%s\x1b[0m', `successfully generated`);
     })
 }
-
-export default compressFonts
