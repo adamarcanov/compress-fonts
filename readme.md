@@ -3,6 +3,7 @@ run file with babel-node
 
 your file:
 ```
+import { join } from 'path'
 import compressFonts from '@offactory/compress-fonts'
 
 compressFonts({ 
