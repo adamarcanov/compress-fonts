@@ -1,5 +1,10 @@
-# Usage in file
-your file:
+# Install
+```
+npm install @offactory/compress-fonts --save-dev
+```
+
+# Usage
+## Import in file and run (babel-node example)
 ```
 import { join } from 'path'
 import compressFonts from '@offactory/compress-fonts'
