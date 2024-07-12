@@ -1,6 +1,10 @@
 # Install
 ```
-npm install @offactory/compress-fonts --save-dev
+npm install @offactory/compress-fonts --save-dev 
+```
+fontforge is required for this lib:
+```
+sudo apt install fontforge
 ```
 
 # Usage
