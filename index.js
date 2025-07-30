@@ -9,7 +9,7 @@ const createDir = require('./lib/create-dir.js')
 
 const createWebDir = dist => createDir(dist, { 'generate_indexhtml': true })
 
-module.exports = ({ src, dist, signs }) => {
+module.exports = ({ src, dist, signs, unifyShapes = true }) => {
     if ( !src || !dist ) throw new Error('Compress Fonts: src and dist are required')
 
     if ( !existsSync(dist) ) createWebDir( dist )
@@ -18,6 +18,13 @@ module.exports = ({ src, dist, signs }) => {
     const fontsExecOptions = { stdio: 'pipe' } // { stdio : 'inherit' }
     const baseSigns = signs && signs.length > 0 ? signs : "!—-–\"”“„#€$%&§'’()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~¡¢£¤¥¦§¨©ª«¬-®¯°±²³´µ¶·¸¹º»¼½¾¿÷ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľſŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽž"
     const subset = textToUnicode(baseSigns).split(', ').map( code => `SelectMore(${code}); ` ).join('')
+
+    // FontForge skrypt do ujednolicania kształtów - uproszczona wersja
+    const unifyShapesScript = unifyShapes ? `
+        RemoveOverlap();
+        Simplify();
+        RoundToInt();
+    ` : '';
 
     truetypeFiles.map( file => {
         const extension = extname(file).toLowerCase();
@@ -35,13 +42,18 @@ module.exports = ({ src, dist, signs }) => {
             }
         } else {
             try {
-                execSync(`fontforge -lang=ff -c 'Open($1);${ baseSigns && baseSigns.length > 0 ? ` SelectNone(); ${subset}` : '' } SelectInvert(); Clear(); Generate($2:r + ".woff", "", 0x200000); Generate($3:r + ".woff2", "", 0x200000);' ${file} ${join(dist, filename + '.woff')} ${join(dist, filename + '.woff2')}`, fontsExecOptions);
+                // Rozszerzony skrypt FontForge z ujednolicaniem kształtów
+                const fontforgeScript = `Open($1);${baseSigns && baseSigns.length > 0 ? ` SelectNone(); ${subset}` : ''}${unifyShapes ? ` ${unifyShapesScript}` : ''} SelectInvert(); Clear(); Generate($2:r + ".woff", "", 0x200000); Generate($3:r + ".woff2", "", 0x200000);`;
+
+                execSync(`fontforge -lang=ff -c '${fontforgeScript}' ${file} ${join(dist, filename + '.woff')} ${join(dist, filename + '.woff2')}`, fontsExecOptions);
+
+                const statusMessage = unifyShapes ? 'successfully generated (with unified shapes)' : 'successfully generated';
+                console.log('['+ `${timeNow()}`.gray + '] ' + `${basename(file)} ` + '\x1b[32m%s\x1b[0m', statusMessage);
+
             } catch (error) {
                 console.error('webfont: an error occurred:', error);
                 process.exit(1)
             }
-
-            console.log('['+ `${timeNow()}`.gray + '] ' + `${basename(file)} ` + '\x1b[32m%s\x1b[0m', `successfully generated`);
         }
     })
 }
