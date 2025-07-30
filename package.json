@@ -1,7 +1,7 @@
 {
   "name": "@offactory/compress-fonts",
-  "version": "1.0.8",
-  "description": "Script that will compress your .ttf and .otf files into .woff and .woff2 files.",
+  "version": "1.1.0",
+  "description": "Script that will compress your .ttf and .otf files into .woff and .woff2 files. Also will simplify font signs to one consistent shape.",
   "main": "index.js",
   "scripts": {},
   "repository": {
