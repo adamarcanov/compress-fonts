@@ -1,6 +1,6 @@
 const { existsSync, copyFileSync } = require('fs')
 const { basename, join, parse, extname } = require('path')
-const { execSync } = require('child_process')
+const { execFileSync } = require('child_process')
 const colors = require('colors')
 const timeNow = require('./lib/time-now.js')
 const listFiles = require('./lib/list-files.js')
@@ -45,7 +45,7 @@ module.exports = ({ src, dist, signs, unifyShapes = true }) => {
                 // Rozszerzony skrypt FontForge z ujednolicaniem kształtów
                 const fontforgeScript = `Open($1);${baseSigns && baseSigns.length > 0 ? ` SelectNone(); ${subset}` : ''}${unifyShapes ? ` ${unifyShapesScript}` : ''} SelectInvert(); Clear(); Generate($2:r + ".woff", "", 0x200000); Generate($3:r + ".woff2", "", 0x200000);`;
 
-                execSync(`fontforge -lang=ff -c '${fontforgeScript}' ${file} ${join(dist, filename + '.woff')} ${join(dist, filename + '.woff2')}`, fontsExecOptions);
+                execFileSync('fontforge', ['-lang=ff', '-c', fontforgeScript, file, join(dist, filename + '.woff'), join(dist, filename + '.woff2')], fontsExecOptions);
 
                 const statusMessage = unifyShapes ? 'successfully generated (with unified shapes)' : 'successfully generated';
                 console.log('['+ `${timeNow()}`.gray + '] ' + `${basename(file)} ` + '\x1b[32m%s\x1b[0m', statusMessage);
